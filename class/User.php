@@ -115,6 +115,19 @@ class User
         ));
     }
 
+    public function delete() { // Excluindo dados no banco
+        $sql = new Connection();
+
+        $sql->query("DELETE FROM users WHERE id = :id", array(
+            ":id" => $this->getId()
+        ));
+
+        $this->setData(0);
+        $this->setUsername("");
+        $this->setEmail("");
+        $this->setPass("");
+    }
+
     public function __construct($login = "", $email = "", $password = "") {
         $this->setUsername($login);
         $this->setEmail($email);
