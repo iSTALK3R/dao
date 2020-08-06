@@ -32,7 +32,7 @@ class Connection extends PDO
         return $stmt;
     }
 
-    public function select($rawQuery, $params = array()):array
+    public function select($rawQuery, $params = array()):array // Recebe os dados do banco de dados e associa-os a um array
     {
         $stmt = $this->query($rawQuery, $params);
 
