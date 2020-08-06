@@ -9,16 +9,16 @@ class Connection extends PDO
         $this->instance = new PDO("mysql: host=localhost:3306; dbname=db_loginsystem", "root", "");
     }
 
-    private function setParams($statment, $parameters = array()) // Associa varios parametros ao comando sql
+    private function setParams($statement, $parameters = array()) // Associa varios parametros ao comando sql
     {
         foreach ($parameters as $key => $value) { // Percorre os parametros
-            $this->setParam($key, $value); // Trata o comando sql com os parametros
+            $this->setParam($statement, $key, $value); // Trata o comando sql com os parametros
         }
     }
 
-    private function setParam($statment, $key, $value) // Associa somente um parametro para o comando sql
+    private function setParam($statement, $key, $value) // Associa somente um parametro para o comando sql
     {
-        $statment->bindParam($key, $value);
+        $statement->bindParam($key, $value);
     }
 
     public function query($rawQuery, $params = array()) // Função que recebe um comando sql sem tratamento ($rawQuery) e parametros ($params) id etc
