@@ -47,12 +47,7 @@ class User
         ));
 
         if (count($result) > 0) {
-            $row = $result[0];
-
-            $this->setId($row['id']);
-            $this->setUsername($row['username']);
-            $this->setEmail($row['email']);
-            $this->setPass($row['pass']);
+            $this->setData($result[0]);
         }
     }
 
@@ -79,15 +74,51 @@ class User
         ));
 
         if (count($result) > 0) {
-            $row = $result[0];
-
-            $this->setId($row['id']);
-            $this->setUsername($row['username']);
-            $this->setEmail($row['email']);
-            $this->setPass($row['pass']);
+            $this->setData($result[0]);
         } else {
             throw new Exception("Login e/ou senha inválidos.");
         }
+    }
+
+    public function setData($data) {
+        $this->setId($data['id']);
+        $this->setUsername($data['username']);
+        $this->setEmail($data['email']);
+        $this->setPass($data['pass']);
+    }
+
+    public function insert() { // Insert de usuario utilizando procedure
+        $sql = new Connection();
+
+        $results = $sql->select("CALL sp_users_insert(:login, :password)", array(
+            ":login" => $this->getUsername(),
+            ":password" => $this->getPass()
+        ));
+
+        if (count($results) > 0) {
+            $this->setData($result[0]);
+        }
+    }
+
+    public function update($login, $email, $password) {
+        $this->setUsername($login);
+        $this->setEmail($email);
+        $this->setPass($password);
+
+        $sql = new Connection();
+
+        $sql->query("UPDATE users SET username = :username, email = :email, pass = :pass WHERE id = :id", array(
+            ":username" => $this->getUsername(),
+            ":email" => $this->getEmail(),
+            ":pass" => $this->getPass(),
+            ":id" => $this->getId()
+        ));
+    }
+
+    public function __construct($login = "", $email = "", $password = "") {
+        $this->setUsername($login);
+        $this->setEmail($email);
+        $this->setPass($password);
     }
 
     public function __toString() { // Função que retorna os valores para o usuario quando é chamado pelo echo
